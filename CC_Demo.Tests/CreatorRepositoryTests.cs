@@ -1,4 +1,5 @@
 using CC_Demo.Data;
+using CC_Demo.Repository;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 

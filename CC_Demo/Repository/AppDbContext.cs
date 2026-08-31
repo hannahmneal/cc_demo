@@ -1,8 +1,9 @@
 using System.Text.Json;
+using CC_Demo.Data;
 using CC_Demo.Models.Marvel;
 using Microsoft.EntityFrameworkCore;
 
-namespace CC_Demo.Data;
+namespace CC_Demo.Repository;
 
 public class AppDbContext : DbContext, IAppDbContext
 {

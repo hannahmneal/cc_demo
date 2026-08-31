@@ -1,6 +1,7 @@
+using CC_Demo.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace CC_Demo.Data;
+namespace CC_Demo.Repository;
 
 public class CreatorRepository : ICreatorRepository
 {

@@ -1,5 +1,5 @@
-using CC_Demo.Data;
 using CC_Demo.Models.Marvel;
+using CC_Demo.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
