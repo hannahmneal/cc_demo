@@ -1,0 +1,71 @@
+using System.Text.Json;
+using CC_Demo.Models.Marvel;
+using Microsoft.EntityFrameworkCore;
+
+namespace CC_Demo.Data;
+
+public class AppDbContext : DbContext, IAppDbContext
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+    public DbSet<Creator> Creator => Set<Creator>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Creator>(entity =>
+        {
+            entity.ToTable("Creators");
+
+            entity.Property(c => c.Id)
+                .HasConversion(id => id.ToString(), value => Ulid.Parse(value));
+
+            entity.OwnsMany(c => c.Urls, url => url.WithOwner().HasForeignKey("CreatorId"));
+
+            entity.Property(c => c.Thumbnail)
+                .HasConversion(
+                    thumbnail => JsonSerializer.Serialize(thumbnail, (JsonSerializerOptions?)null),
+                    json => JsonSerializer.Deserialize<ThumbnailMarvel>(json, (JsonSerializerOptions?)null) ?? new ThumbnailMarvel())
+                .HasColumnType("jsonb");
+
+            entity.OwnsOne(c => c.Comics, comics =>
+            {
+                comics.ToTable("CreatorComics");
+                comics.OwnsMany(c => c.Items, item =>
+                {
+                    item.ToTable("CreatorComicsItems");
+                    item.WithOwner().HasForeignKey("CreatorId");
+                });
+            });
+
+            entity.OwnsOne(c => c.Events, events =>
+            {
+                events.ToTable("CreatorEvents");
+                events.OwnsMany(e => e.Items, item =>
+                {
+                    item.ToTable("CreatorEventsItems");
+                    item.WithOwner().HasForeignKey("CreatorId");
+                });
+            });
+
+            entity.OwnsOne(c => c.Series, series =>
+            {
+                series.ToTable("CreatorSeries");
+                series.OwnsMany(s => s.Items, item =>
+                {
+                    item.ToTable("CreatorSeriesItems");
+                    item.WithOwner().HasForeignKey("CreatorId");
+                });
+            });
+
+            entity.OwnsOne(c => c.Stories, stories =>
+            {
+                stories.ToTable("CreatorStories");
+                stories.OwnsMany(s => s.Items, item =>
+                {
+                    item.ToTable("CreatorStoriesItems");
+                    item.WithOwner().HasForeignKey("CreatorId");
+                });
+            });
+        });
+    }
+}

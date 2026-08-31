@@ -1,0 +1,14 @@
+[
+  {
+    "marvel_id": 1011015,
+    "attribution_html": "<a href=\"http://marvel.com\">Data provided by Marvel. © 2024 MARVEL</a>",
+    "attribution_text": "Data provided by Marvel. © 2024 MARVEL",
+    "copyright": "© 2024 MARVEL",
+    "data": {"id": 1011015, "name": "Changeling", "urls": [{"url": "http://marvel.com/characters/421/changeling?utm_campaign=apiRef&utm_source=c498120190fdb61f748e161da0d741fe", "type": "detail"}, {"url": "http://marvel.com/universe/Changeling?utm_campaign=apiRef&utm_source=c498120190fdb61f748e161da0d741fe", "type": "wiki"}, {"url": "http://marvel.com/comics/characters/1011015/changeling?utm_campaign=apiRef&utm_source=c498120190fdb61f748e161da0d741fe", "type": "comiclink"}], "comics": {"items": [], "returned": 0, "available": 0, "collectionURI": "http://gateway.marvel.com/v1/public/characters/1011015/comics"}, "events": {"items": [], "returned": 0, "available": 0, "collectionURI": "http://gateway.marvel.com/v1/public/characters/1011015/events"}, "series": {"items": [], "returned": 0, "available": 0, "collectionURI": "http://gateway.marvel.com/v1/public/characters/1011015/series"}, "stories": {"items": [], "returned": 0, "available": 0, "collectionURI": "http://gateway.marvel.com/v1/public/characters/1011015/stories"}, "modified": "1969-12-31T19:00:00-0500", "thumbnail": {"path": "http://i.annihil.us/u/prod/marvel/i/mg/5/b0/4c00326c980ac", "extension": "jpg"}, "description": "", "resourceURI": "http://gateway.marvel.com/v1/public/characters/1011015"},
+    "datetime_added": "2024-10-02 19:31:07.653656 +00:00",
+    "resource": "characters",
+    "resource_uri": "http://gateway.marvel.com/v1/public/characters/1011015",
+    "version": 1,
+    "id": "01KKMFCD57A4JZM58PPFN2KMW2"
+  }
+]

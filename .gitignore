@@ -1,0 +1,22 @@
+## .NET
+bin/
+obj/
+
+## Rider / .idea
+.idea/
+
+## SQLite databases
+*.db
+*.db-shm
+*.db-wal
+
+## User-specific files
+*.user
+*.suo
+
+## Contains live DB credentials
+CC_Demo/launchSettings.json
+
+## Build results
+[Dd]ebug/
+[Rr]elease/

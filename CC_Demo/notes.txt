@@ -1,0 +1,10 @@
+- Removed character "Changeling" (marvel_id: 1011015) from db
+- Removed comic marvel_id 105885 from db
+
+Can use creator Danny Miki with Studio (marvel_id: ) for GET, UPDATE, DELETE
+{
+    "fullName": "Danny Miki with Studio",
+    "firstName": "Danny",
+    "lastName": "Studio",
+    "middleName": "Miki with"
+}
