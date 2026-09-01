@@ -15,7 +15,7 @@ obj/
 *.suo
 
 ## Contains live DB credentials
-CC_Demo/launchSettings.json
+CC_Demo/Properties/launchSettings.json
 
 ## Build results
 [Dd]ebug/
