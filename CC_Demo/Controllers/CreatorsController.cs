@@ -2,6 +2,9 @@ using CC_Demo.Data;
 using CC_Demo.Repository;
 using Microsoft.AspNetCore.Mvc;
 
+// TODO: `api/creators` should be distinct from `api/marvel/creators`. 
+// TODO: Investigate whether to use separate controllers + endpoints for distinction.
+
 namespace CC_Demo.Controllers;
 
 /// <summary>

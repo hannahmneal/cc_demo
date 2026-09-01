@@ -1,4 +1,6 @@
-namespace CC_Demo.Data;
+namespace CC_Demo.Models.Marvel;
+
+// TODO: Unused. Could be base class for Required Attributions?
 
 public class MarvelRecord
 {
