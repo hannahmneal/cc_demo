@@ -17,6 +17,9 @@ obj/
 ## Contains live DB credentials
 CC_Demo/Properties/launchSettings.json
 
+## Personal file clutter
+CC_Demo/notes.txt
+
 ## Build results
 [Dd]ebug/
 [Rr]elease/
