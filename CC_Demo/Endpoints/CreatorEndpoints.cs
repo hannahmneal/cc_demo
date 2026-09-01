@@ -11,10 +11,21 @@ public static class CreatorEndpoints
         group.MapGet("/", async (ICreatorRepository repository, CancellationToken ct) =>
             Results.Ok(await repository.GetAllAsync(ct)));
 
-        group.MapGet("/{id}", async (Ulid id, ICreatorRepository repository, CancellationToken ct) =>
+        group.MapGet("/{id}", async (string id, ICreatorRepository repository, CancellationToken ct) =>
         {
-            var creator = await repository.GetByIdAsync(id, ct);
-            return creator is null ? Results.NotFound() : Results.Ok(creator);
+            if (int.TryParse(id, out var marvelId))
+            {
+                var byMarvelId = await repository.GetByMarvelIdAsync(marvelId, ct);
+                return byMarvelId is null ? Results.NotFound() : Results.Ok(byMarvelId);
+            }
+
+            if (Ulid.TryParse(id, out var ulid))
+            {
+                var byId = await repository.GetByIdAsync(ulid, ct);
+                return byId is null ? Results.NotFound() : Results.Ok(byId);
+            }
+
+            return Results.BadRequest($"'{id}' is not a valid Ulid or integer id.");
         });
     }
 }
