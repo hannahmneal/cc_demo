@@ -1,10 +1,8 @@
-using CC_Demo.Models.Marvel;
+using CC_Demo.Endpoints;
 using CC_Demo.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
-var builder = Host.CreateApplicationBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 var pgConnectionString = builder.Configuration["PG_CONNECTION"]
     ?? throw new InvalidOperationException("PG_CONNECTION environment variable is not set.");
@@ -14,24 +12,24 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
 builder.Services.AddScoped<ICreatorRepository, CreatorRepository>();
 
-using var host = builder.Build();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-using (var scope = host.Services.CreateScope())
+var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await db.Database.MigrateAsync();
-
-    var repository = scope.ServiceProvider.GetRequiredService<ICreatorRepository>();
-
-    var creators = await repository.GetAllAsync();
-    foreach (var creator in creators)
-    {
-        Console.WriteLine($"Creator {creator.Id}");
-        
-        Console.WriteLine(new ComicsMarvel());
-        Console.WriteLine(new CreatorMarvel());
-        Console.WriteLine(new EventsMarvel());
-        Console.WriteLine(new SeriesMarvel());
-        Console.WriteLine(new StoriesMarvel());
-    }
 }
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.MapGet("/", () => Results.Redirect("/swagger"));
+}
+
+app.MapCreatorEndpoints();
+
+app.Run();
