@@ -1,4 +1,4 @@
-using CC_Demo.Endpoints;
+using System.Reflection;
 using CC_Demo.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,8 +12,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
 builder.Services.AddScoped<ICreatorRepository, CreatorRepository>();
 
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFile));
+});
 
 var app = builder.Build();
 
@@ -30,6 +37,6 @@ if (app.Environment.IsDevelopment())
     app.MapGet("/", () => Results.Redirect("/swagger"));
 }
 
-app.MapCreatorEndpoints();
+app.MapControllers();
 
 app.Run();
