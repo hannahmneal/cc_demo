@@ -1,4 +1,6 @@
-namespace CC_Demo.Data;
+namespace CC_Demo.Models.Marvel;
+
+// TODO: Unused. Could be base class for Required Attributions?
 
 public class MarvelRecord
 {
@@ -7,6 +9,7 @@ public class MarvelRecord
     public string AttributionText { get; set; } = string.Empty;
     public string CopyrightHtml { get; set; } = string.Empty;
     // data
+    
     public DateTime OnSaleDate { get; set; } = default;
 }
 

@@ -10,6 +10,10 @@ public class Creator
 
     [JsonPropertyName("marvelId")]
     public int MarvelId { get; set; }
+    
+    // TODO: Creator Type
+    
+    // TODO: Creator References (urls, links to portfolios, socials, etc.; use LLM to discover)
 
     [JsonPropertyName("firstName")]
     public string FirstName { get; set; } = string.Empty;
@@ -26,36 +30,44 @@ public class Creator
     [JsonPropertyName("fullName")]
     public string FullName { get; set; } = string.Empty;
 
+    // TODO: Ensure this is distinct from Marvel's `modified` attr. Create two `modified` dates to distinguish.
     [JsonPropertyName("modified")]
     public DateTime? Modified { get; set; } // Marvel API returns a sentinel out-of-range date when a creator has never been modified.
+
+    // TODO: "Required Attributions" class?
+    [JsonPropertyName("attributionHtml")]
+    public required string AttributionHtml { get; set; }
+
+    // TODO: "Required Attributions" class?
+    [JsonPropertyName("attributionText")]
+    public required string AttributionText { get; set; }
+
+    // TODO: "Required Attributions" class?
+    [JsonPropertyName("copyright")]
+    public string Copyright { get; set; } = string.Empty;
+
+    // TODO: Remove datetimeAdded. It is redundant with datetimeCreated.
+    [JsonPropertyName("datetimeAdded")]
+    public DateTime DatetimeAdded { get; set; } = DateTime.UtcNow; // TODO: If no value, set one upon initialization; cannot be changed once set!
+
+    // TODO: change spelling to `datetimeCreated`
+    [JsonPropertyName("dateTimeCreated")]
+    public DateTime DateTimeCreated { get; set; } = DateTime.UtcNow; // Set once upon initialization; cannot be changed once set.
+
+    // TODO: If we have a `Creators` table, is this attr necessary?
+    [JsonPropertyName("resource")]
+    public string Resource { get; set; } = "creators";
+
+    // TODO: If MDA's resourceUri is non-functional, remove this attr 
+    [JsonPropertyName("resourceURI")]
+    public string ResourceUri { get; set; } = string.Empty;
 
     [JsonPropertyName("thumbnail")]
     public ThumbnailMarvel Thumbnail { get; set; } = new();
 
     [JsonPropertyName("urls")]
     public List<UrlMarvel> Urls { get; set; } = [];
-
-    [JsonPropertyName("attributionHtml")]
-    public required string AttributionHtml { get; set; }
-
-    [JsonPropertyName("attributionText")]
-    public required string AttributionText { get; set; }
-
-    [JsonPropertyName("copyright")]
-    public string Copyright { get; set; } = string.Empty;
-
-    [JsonPropertyName("datetimeAdded")]
-    public DateTime DatetimeAdded { get; set; } = DateTime.UtcNow; // TODO: If no value, set one upon initialization; cannot be changed once set!
-
-    [JsonPropertyName("dateTimeCreated")]
-    public DateTime DateTimeCreated { get; set; } = DateTime.UtcNow; // Set once upon initialization; cannot be changed once set.
-
-    [JsonPropertyName("resource")]
-    public string Resource { get; set; } = "creators";
-
-    [JsonPropertyName("resourceURI")]
-    public string ResourceUri { get; set; } = string.Empty;
-
+    
     public int Version { get; set; } = 1; // TODO: 1 upon initialization, n + 1 after each update
 
     [JsonPropertyName("comics")]

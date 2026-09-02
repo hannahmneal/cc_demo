@@ -12,6 +12,9 @@ public class CreatorRepository : ICreatorRepository
     public Task<Creator?> GetByIdAsync(Ulid id, CancellationToken ct = default) =>
         _db.Creator.FirstOrDefaultAsync(c => c.Id == id, ct);
 
+    public Task<Creator?> GetByMarvelIdAsync(int marvelId, CancellationToken ct = default) =>
+        _db.Creator.FirstOrDefaultAsync(c => c.MarvelId == marvelId, ct);
+
     public Task<List<Creator>> GetAllAsync(CancellationToken ct = default) =>
         _db.Creator.ToListAsync(ct);
 
