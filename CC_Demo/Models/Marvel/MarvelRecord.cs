@@ -9,6 +9,7 @@ public class MarvelRecord
     public string AttributionText { get; set; } = string.Empty;
     public string CopyrightHtml { get; set; } = string.Empty;
     // data
+    
     public DateTime OnSaleDate { get; set; } = default;
 }
 
