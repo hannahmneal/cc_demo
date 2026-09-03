@@ -1,4 +1,5 @@
-using CC_Demo.Data;
+using CC_Demo.Models;
+using CC_Demo.Models.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace CC_Demo.Repository;
@@ -15,8 +16,10 @@ public class CreatorRepository : ICreatorRepository
     public Task<Creator?> GetByMarvelIdAsync(int marvelId, CancellationToken ct = default) =>
         _db.Creator.FirstOrDefaultAsync(c => c.MarvelId == marvelId, ct);
 
-    public Task<List<Creator>> GetAllAsync(CancellationToken ct = default) =>
-        _db.Creator.ToListAsync(ct);
+    public Task<PagedResult<Creator>> GetAllAsync(PaginationRequest pagination, CancellationToken ct = default) =>
+        _db.Creator.AsNoTracking()
+            .OrderBy(c => c.Id)
+            .ToPagedResultAsync(pagination, ct);
 
     public async Task AddAsync(Creator creator, CancellationToken ct = default)
     {

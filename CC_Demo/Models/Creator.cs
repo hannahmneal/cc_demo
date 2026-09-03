@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using CC_Demo.Models.Marvel;
 
-namespace CC_Demo.Data;
+namespace CC_Demo.Models;
 
 public class Creator
 {
@@ -46,9 +46,11 @@ public class Creator
     [JsonPropertyName("copyright")]
     public string Copyright { get; set; } = string.Empty;
 
-    // TODO: Remove datetimeAdded. It is redundant with datetimeCreated.
-    [JsonPropertyName("datetimeAdded")]
-    public DateTime DatetimeAdded { get; set; } = DateTime.UtcNow; // TODO: If no value, set one upon initialization; cannot be changed once set!
+    // When this row was ingested into our own database - distinct from DateTimeCreated (Marvel's own
+    // creation concept). Not served to API consumers; internal bookkeeping only.
+    [JsonPropertyName("datetimeIngested")]
+    [JsonIgnore]
+    public DateTime DateTimeIngested { get; set; } = DateTime.UtcNow; // Set once upon initialization; cannot be changed once set.
 
     // TODO: change spelling to `datetimeCreated`
     [JsonPropertyName("dateTimeCreated")]
