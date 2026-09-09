@@ -5,8 +5,8 @@ namespace CC_Demo.Models.Pagination;
 
 /// <summary>
 /// Serializes any <see cref="PagedResult{T}"/> with its items array keyed by
-/// <see cref="PagedResult{T}.ItemsName"/> instead of a fixed "items" property -
-/// e.g. <c>{ "creators": [...], "totalCount": 952, ... }</c>.
+/// <see cref="PagedResult{T}.ItemsName"/> - e.g. for Creators:
+/// <c>{ "creators": [...], "totalCount": 952, ... }</c>.
 /// One converter handles every entity type; no per-entity subclass of <see cref="PagedResult{T}"/> is needed.
 /// </summary>
 public class PagedResultJsonConverterFactory : JsonConverterFactory

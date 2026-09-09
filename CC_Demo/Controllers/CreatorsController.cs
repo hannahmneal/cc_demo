@@ -69,9 +69,9 @@ public class CreatorsController(ICreatorRepository repository) : ControllerBase
             return byMarvelId is null ? NotFound() : Ok(byMarvelId);
         }
 
-        if (Ulid.TryParse(id, out var ulid))
+        if (Ulid.TryParse(id, out var ccId))
         {
-            var byId = await repository.GetByIdAsync(ulid, ct);
+            var byId = await repository.GetByIdAsync(ccId, ct);
             return byId is null ? NotFound() : Ok(byId);
         }
 

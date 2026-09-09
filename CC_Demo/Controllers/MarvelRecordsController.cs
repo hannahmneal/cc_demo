@@ -48,11 +48,11 @@ public class MarvelRecordsController(IMarvelRecordRepository repository) : Contr
     /// Gets a single raw record by id for the given Marvel resource type.
     /// </summary>
     /// <param name="resource">One of: creators, characters, series, stories, comics, events.</param>
-    /// <param name="id">The record's ULID primary key.</param>
+    /// <param name="id">A ULID matching the record's primary key, or an integer matching its MarvelId.</param>
     /// <param name="ct">Cancellation token for the request.</param>
     /// <returns>The matching raw record.</returns>
     /// <response code="200">A record matching the given id was found.</response>
-    /// <response code="400"><paramref name="id"/> is not a valid ULID.</response>
+    /// <response code="400"><paramref name="id"/> was neither a valid ULID nor a valid integer.</response>
     /// <response code="404"><paramref name="resource"/> is not a recognized Marvel resource type, or no record matches the given id.</response>
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(MarvelRecordDto), StatusCodes.Status200OK)]
@@ -63,8 +63,14 @@ public class MarvelRecordsController(IMarvelRecordRepository repository) : Contr
         if (!MarvelResourceTypes.IsValid(resource))
             return NotFound($"'{resource}' is not a recognized Marvel resource type.");
 
+        if (int.TryParse(id, out var marvelId))
+        {
+            var byMarvelId = await repository.GetByMarvelIdAsync(resource, marvelId, ct);
+            return byMarvelId is null ? NotFound() : Ok(MarvelRecordDto.FromEntity(byMarvelId));
+        }
+
         if (!Ulid.TryParse(id, out var ulid))
-            return BadRequest($"'{id}' is not a valid id.");
+            return BadRequest($"'{id}' is not a valid Ulid or integer id.");
 
         var record = await repository.GetByIdAsync(resource, ulid, ct);
         return record is null ? NotFound() : Ok(MarvelRecordDto.FromEntity(record));
