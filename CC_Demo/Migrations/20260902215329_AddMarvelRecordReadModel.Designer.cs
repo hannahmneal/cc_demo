@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CC_Demo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260831194516_AddCreatedAtAndNormalizedCollections")]
-    partial class AddCreatedAtAndNormalizedCollections
+    [Migration("20260902215329_AddMarvelRecordReadModel")]
+    partial class AddMarvelRecordReadModel
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -108,6 +108,62 @@ namespace CC_Demo.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Creators", (string)null);
+                });
+
+            modelBuilder.Entity("CC_Demo.Models.Marvel.MarvelRecord", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text")
+                        .HasColumnName("id");
+
+                    b.Property<string>("AttributionHtml")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("attribution_html");
+
+                    b.Property<string>("AttributionText")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("attribution_text");
+
+                    b.Property<string>("Copyright")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("copyright");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("data");
+
+                    b.Property<DateTime>("DatetimeAdded")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("datetime_added");
+
+                    b.Property<int>("MarvelId")
+                        .HasColumnType("integer")
+                        .HasColumnName("marvel_id");
+
+                    b.Property<string>("Resource")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("resource");
+
+                    b.Property<string>("ResourceUri")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("resource_uri");
+
+                    b.Property<int>("Version")
+                        .HasColumnType("integer")
+                        .HasColumnName("version");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("cc_demo", null, t =>
+                        {
+                            t.ExcludeFromMigrations();
+                        });
                 });
 
             modelBuilder.Entity("CC_Demo.Data.Creator", b =>

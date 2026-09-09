@@ -1,5 +1,5 @@
 using System.Text.Json;
-using CC_Demo.Data;
+using CC_Demo.Models;
 using CC_Demo.Models.Marvel;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +10,7 @@ public class AppDbContext : DbContext, IAppDbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     public DbSet<Creator> Creator => Set<Creator>();
+    public DbSet<MarvelRecord> MarvelRecords => Set<MarvelRecord>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -67,6 +68,23 @@ public class AppDbContext : DbContext, IAppDbContext
                     item.WithOwner().HasForeignKey("CreatorId");
                 });
             });
+        });
+
+        modelBuilder.Entity<MarvelRecord>(entity =>
+        {
+            // cc_demo pre-exists and is managed outside EF; migrations must never create/alter it.
+            entity.ToTable("cc_demo", t => t.ExcludeFromMigrations());
+            entity.HasKey(m => m.Id);
+
+            entity.Property(m => m.Id).HasColumnName("id")
+                .HasConversion(id => id.ToString(), value => Ulid.Parse(value));
+            entity.Property(m => m.MarvelId).HasColumnName("marvel_id");
+            entity.Property(m => m.AttributionHtml).HasColumnName("attribution_html");
+            entity.Property(m => m.AttributionText).HasColumnName("attribution_text");
+            entity.Property(m => m.Copyright).HasColumnName("copyright");
+            entity.Property(m => m.Data).HasColumnName("data").HasColumnType("jsonb");
+            entity.Property(m => m.Resource).HasColumnName("resource");
+            entity.Property(m => m.ResourceUri).HasColumnName("resource_uri");
         });
     }
 }

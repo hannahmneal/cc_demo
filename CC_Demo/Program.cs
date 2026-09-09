@@ -1,4 +1,5 @@
 using System.Reflection;
+using CC_Demo.Models.Pagination;
 using CC_Demo.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(pgConnectionString, npgsql => npgsql.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 builder.Services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
 builder.Services.AddScoped<ICreatorRepository, CreatorRepository>();
+builder.Services.AddScoped<IMarvelRecordRepository, MarvelRecordRepository>();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new PagedResultJsonConverterFactory()));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

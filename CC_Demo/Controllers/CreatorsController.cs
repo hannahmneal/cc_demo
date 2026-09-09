@@ -1,4 +1,5 @@
-using CC_Demo.Data;
+using CC_Demo.Models;
+using CC_Demo.Models.Pagination;
 using CC_Demo.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,20 +17,29 @@ namespace CC_Demo.Controllers;
 public class CreatorsController(ICreatorRepository repository) : ControllerBase
 {
     /// <summary>
-    /// Gets a list of <see cref="Creator"/> objects.
+    /// Gets a page of <see cref="Creator"/> objects.
     /// </summary>
     /// <remarks>
-    /// Returns every creator currently stored in the database, including each creator's
+    /// Returns creators currently stored in the database, including each creator's
     /// nested Comics, Events, Series, and Stories collections.
     /// </remarks>
+    /// <param name="page">1-based page number. Defaults to 1.</param>
+    /// <param name="pageSize">One of 20, 50, 100, or "all". Defaults to 20.</param>
     /// <param name="ct">Cancellation token for the request.</param>
-    /// <returns>A list of <see cref="Creator"/> objects.</returns>
-    /// <response code="200">The list of creators was retrieved successfully.</response>
+    /// <returns>A page of <see cref="Creator"/> objects, plus paging metadata.</returns>
+    /// <response code="200">The page of creators was retrieved successfully.</response>
+    /// <response code="400"><paramref name="page"/> or <paramref name="pageSize"/> was invalid.</response>
     [HttpGet]
-    [ProducesResponseType(typeof(List<Creator>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<List<Creator>>> GetAll(CancellationToken ct)
+    [ProducesResponseType(typeof(PagedResult<Creator>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<PagedResult<Creator>>> GetAll(
+        [FromQuery] int page = 1, [FromQuery] string pageSize = "20", CancellationToken ct = default)
     {
-        return Ok(await repository.GetAllAsync(ct));
+        if (!PaginationRequest.TryParse(page, pageSize, out var pagination, out var error))
+            return BadRequest(error);
+
+        var result = await repository.GetAllAsync(pagination, ct);
+        return Ok(result with { ItemsName = "creators" });
     }
 
     /// <summary>
@@ -59,9 +69,9 @@ public class CreatorsController(ICreatorRepository repository) : ControllerBase
             return byMarvelId is null ? NotFound() : Ok(byMarvelId);
         }
 
-        if (Ulid.TryParse(id, out var ulid))
+        if (Ulid.TryParse(id, out var ccId))
         {
-            var byId = await repository.GetByIdAsync(ulid, ct);
+            var byId = await repository.GetByIdAsync(ccId, ct);
             return byId is null ? NotFound() : Ok(byId);
         }
 
