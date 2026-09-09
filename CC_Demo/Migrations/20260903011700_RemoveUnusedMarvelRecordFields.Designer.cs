@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CC_Demo.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260831194516_AddCreatedAtAndNormalizedCollections")]
-    partial class AddCreatedAtAndNormalizedCollections
+    [Migration("20260903011700_RemoveUnusedMarvelRecordFields")]
+    partial class RemoveUnusedMarvelRecordFields
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace CC_Demo.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CC_Demo.Data.Creator", b =>
+            modelBuilder.Entity("CC_Demo.Models.Creator", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text")
@@ -50,9 +50,9 @@ namespace CC_Demo.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasAnnotation("Relational:JsonPropertyName", "dateTimeCreated");
 
-                    b.Property<DateTime>("DatetimeAdded")
+                    b.Property<DateTime>("DateTimeIngested")
                         .HasColumnType("timestamp with time zone")
-                        .HasAnnotation("Relational:JsonPropertyName", "datetimeAdded");
+                        .HasAnnotation("Relational:JsonPropertyName", "datetimeIngested");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -110,7 +110,55 @@ namespace CC_Demo.Migrations
                     b.ToTable("Creators", (string)null);
                 });
 
-            modelBuilder.Entity("CC_Demo.Data.Creator", b =>
+            modelBuilder.Entity("CC_Demo.Models.Marvel.MarvelRecord", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text")
+                        .HasColumnName("id");
+
+                    b.Property<string>("AttributionHtml")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("attribution_html");
+
+                    b.Property<string>("AttributionText")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("attribution_text");
+
+                    b.Property<string>("Copyright")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("copyright");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("data");
+
+                    b.Property<int>("MarvelId")
+                        .HasColumnType("integer")
+                        .HasColumnName("marvel_id");
+
+                    b.Property<string>("Resource")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("resource");
+
+                    b.Property<string>("ResourceUri")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("resource_uri");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("cc_demo", null, t =>
+                        {
+                            t.ExcludeFromMigrations();
+                        });
+                });
+
+            modelBuilder.Entity("CC_Demo.Models.Creator", b =>
                 {
                     b.OwnsOne("CC_Demo.Models.Marvel.ComicsMarvel", "Comics", b1 =>
                         {
