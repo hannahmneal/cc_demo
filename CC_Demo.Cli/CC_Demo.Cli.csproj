@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>CC_Demo.Cli</RootNamespace>
+        <AssemblyName>cc_demo</AssemblyName>
+
+        <!-- Lets the tool be installed as `cc_demo` via `dotnet tool install`. -->
+        <PackAsTool>true</PackAsTool>
+        <ToolCommandName>cc_demo</ToolCommandName>
+        <PackageId>CC_Demo.Cli</PackageId>
+        <Version>1.0.0</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Npgsql" Version="9.0.4" />
+        <PackageReference Include="Spectre.Console" Version="0.49.1" />
+    </ItemGroup>
+
+</Project>
