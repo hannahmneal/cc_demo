@@ -50,9 +50,9 @@ namespace CC_Demo.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasAnnotation("Relational:JsonPropertyName", "dateTimeCreated");
 
-                    b.Property<DateTime>("DatetimeAdded")
+                    b.Property<DateTime>("DateTimeIngested")
                         .HasColumnType("timestamp with time zone")
-                        .HasAnnotation("Relational:JsonPropertyName", "datetimeAdded");
+                        .HasAnnotation("Relational:JsonPropertyName", "datetimeIngested");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
