@@ -8,5 +8,4 @@ neon_org_id          = "org-xxx" # Neon console > Organization settings
 cloudflare_api_token = "xxx"
 cloudflare_zone_id   = "xxx" # Cloudflare dashboard > redqueen.run > Overview, right sidebar
 image_repository     = "ghcr.io/hannahmneal/cc-demo"
-image_tag            = "latest"
 subdomain            = "cc-demo"

@@ -72,7 +72,6 @@ jobs:
       TF_VAR_cloudflare_api_token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       TF_VAR_cloudflare_zone_id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
       TF_VAR_image_repository: ghcr.io/${{ github.repository_owner }}/cc-demo
-      TF_VAR_image_tag: ${{ needs.build-and-push.outputs.image_tag }}
     steps:
       - uses: actions/checkout@v4
 
@@ -80,3 +79,13 @@ jobs:
 
       - run: terraform init
       - run: terraform apply -auto-approve
+
+      # render_web_service is pinned to the "latest" tag on purpose (see the
+      # comment in render.tf) - `terraform apply` above only provisions
+      # infra, it never tells Render to pull the image that build-and-push
+      # just pushed. Trigger that redeploy explicitly instead, via the
+      # service's deploy hook (Render dashboard > cc-demo-api > Settings >
+      # Deploy Hook), which sidesteps the buggy Terraform update path
+      # entirely.
+      - name: Trigger Render deploy
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
