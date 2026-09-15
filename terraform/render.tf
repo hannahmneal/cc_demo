@@ -20,7 +20,7 @@ resource "render_web_service" "cc_demo_api" {
   }
 
   env_vars = {
-    "PG_CONNECTION"          = { value = neon_project.cc_demo.connection_uri_pooler }
+    "PG_CONNECTION"          = { value = local.pg_connection_string }
     "ASPNETCORE_ENVIRONMENT" = { value = "Production" }
   }
 
