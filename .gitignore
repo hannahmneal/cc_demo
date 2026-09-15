@@ -23,3 +23,11 @@ CC_Demo/notes.txt
 ## Build results
 [Dd]ebug/
 [Rr]elease/
+
+## Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfplan
+terraform/terraform.tfvars
+terraform/*.auto.tfvars
