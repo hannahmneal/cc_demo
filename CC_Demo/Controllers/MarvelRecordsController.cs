@@ -13,6 +13,7 @@ namespace CC_Demo.Controllers;
 [ApiController]
 [Route("api/marvel/{resource}")]
 [Tags("MarvelRecords")]
+[ApiExplorerSettings(IgnoreApi = true)]
 public class MarvelRecordsController(IMarvelRecordRepository repository) : ControllerBase
 {
     /// <summary>
