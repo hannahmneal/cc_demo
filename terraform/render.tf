@@ -1,7 +1,3 @@
-# The API (requirement 2): the only public entry point. Postgres itself has
-# no direct public ingress — it's reachable solely via the PG_CONNECTION env
-# var wired in below.
-#
 # NOTE: Render needs credentials to pull a *private* GHCR image (there's a
 # render_registry_credential resource for that, plus registry_credential_id
 # on runtime_source.image below). Simplest free path: after the first image
