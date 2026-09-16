@@ -36,12 +36,9 @@ using (var scope = app.Services.CreateScope())
     await db.Database.MigrateAsync();
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-    app.MapGet("/", () => Results.Redirect("/swagger"));
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.MapControllers();
 

@@ -36,12 +36,6 @@ variable "image_repository" {
   type        = string
 }
 
-variable "image_tag" {
-  description = "Image tag to deploy (set per CI run, e.g. the git SHA)"
-  type        = string
-  default     = "latest"
-}
-
 variable "subdomain" {
   description = "Single-level subdomain under redqueen.run for this project"
   type        = string

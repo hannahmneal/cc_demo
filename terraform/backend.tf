@@ -1,11 +1,4 @@
-#   3. Fill in account_id/bucket below, and export the R2 keys as
-#      AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY when running `terraform init`
-#      (locally and as GitHub Actions secrets) - the S3 backend reads them
-#      from the standard AWS env vars.
-#
-# Backend blocks can't reference variables, so these two values are literal.
-terraform {
-  backend "s3" {
+ backend "s3" {
     bucket                      = "cc-demo-tfstate"
     key                         = "cc-demo/terraform.tfstate"
     region                      = "auto"

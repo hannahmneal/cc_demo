@@ -1,7 +1,4 @@
 # This is a community-maintained provider, not an official Neon product.
-# Double-check resource/attribute names against the current provider docs
-# (https://registry.terraform.io/providers/kislerdm/neon/latest/docs) before
-# your first `terraform apply`, since they can change between versions.
 resource "neon_project" "cc_demo" {
   name       = "cc-demo"
   org_id     = var.neon_org_id
@@ -13,7 +10,21 @@ resource "neon_project" "cc_demo" {
   history_retention_seconds = 21600
 }
 
+locals {
+  # Npgsql does NOT support Neon's postgres:// URI format (connection_uri /
+  # connection_uri_pooler) - it only parses keyword=value connection strings,
+  # so build one from the individual attributes instead.
+  pg_connection_string = join(";", [
+    "Host=${neon_project.cc_demo.database_host_pooler}",
+    "Port=5432",
+    "Database=${neon_project.cc_demo.database_name}",
+    "Username=${neon_project.cc_demo.database_user}",
+    "Password=${neon_project.cc_demo.database_password}",
+    "SSL Mode=Require",
+  ])
+}
+
 output "neon_connection_uri" {
-  value     = neon_project.cc_demo.connection_uri_pooler
+  value     = local.pg_connection_string
   sensitive = true
 }
