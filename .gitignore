@@ -19,6 +19,8 @@ CC_Demo/Properties/launchSettings.json
 
 ## Personal file clutter
 CC_Demo/notes.txt
+.DS_Store
+CC_Demo Notes.rtf
 
 ## Build results
 [Dd]ebug/
