@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: cc_demo_postgres_local
+    environment:
+      POSTGRES_DB: cc_demo_db
+      POSTGRES_USER: cc_demo_admin
+      POSTGRES_PASSWORD: cc_password_local
+    ports:
+      - "5434:5432"
+    volumes:
+      - cc_demo_pg_data:/var/lib/postgresql/data
+
+volumes:
+  cc_demo_pg_data:
