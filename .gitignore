@@ -16,6 +16,7 @@ obj/
 
 ## Contains live DB credentials
 CC_Demo/Properties/launchSettings.json
+CC_Demo/.env
 
 ## Personal file clutter
 CC_Demo/notes.txt
@@ -33,6 +34,3 @@ terraform/*.tfstate.*
 terraform/*.tfplan
 terraform/terraform.tfvars
 terraform/*.auto.tfvars
-
-## Docker
-docker-compose.yml

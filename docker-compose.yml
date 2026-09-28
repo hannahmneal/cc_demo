@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_DB: cc_demo_db
       POSTGRES_USER: cc_demo_admin
-      POSTGRES_PASSWORD: cc_password_local
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5434:5432"
     volumes:
