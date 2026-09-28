@@ -99,10 +99,3 @@ Each source gets its own module under `scraper/sources/` implementing the `Sourc
 `scraper/sources/base.py`, its own raw table + migration on the C# side, and its own `.env`
 values. The CLI, checkpointing, and HTTP retry/rate-limit plumbing in `scraper/` are all reusable
 as-is.
-
-## Known limitations (the source API, not this scraper)
-
-- Unofficial: its own docs say the API's fields "should not be considered stable."
-- No publisher filter, no ordering param that actually works, fixed page size -- hence the
-  two-phase design above.
-- No dedicated creator/person endpoint. Creators only exist as free-text credit fields per story.
