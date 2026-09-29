@@ -1,7 +1,4 @@
 # This is a community-maintained provider, not an official Neon product.
-# Double-check resource/attribute names against the current provider docs
-# (https://registry.terraform.io/providers/kislerdm/neon/latest/docs) before
-# your first `terraform apply`, since they can change between versions.
 resource "neon_project" "cc_demo" {
   name       = "cc-demo"
   org_id     = var.neon_org_id

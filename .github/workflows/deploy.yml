@@ -1,10 +1,12 @@
 name: Build and deploy CC_Demo
 
+# Merging to master only runs tests (via the PR). Prod deploys when a
+# release is published - see "Releasing" in the README.
 on:
-  push:
-    branches: [master]
   pull_request:
-    branches: [master]
+    branches: [master, dev]
+  release:
+    types: [published]
 
 env:
   REGISTRY: ghcr.io
@@ -26,7 +28,7 @@ jobs:
 
   build-and-push:
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'release' && !github.event.release.prerelease
     runs-on: ubuntu-latest
     outputs:
       image_tag: ${{ steps.image.outputs.tag }}
@@ -35,9 +37,24 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # A release can target any branch; only ship commits that have
+      # already been merged to master.
+      - name: Verify release commit is on master
+        run: |
+          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/master; then
+            echo "::error::Release commit $GITHUB_SHA is not on master"
+            exit 1
+          fi
 
       - id: image
-        run: echo "tag=${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+        env:
+          VERSION: ${{ github.event.release.tag_name }}
+        run: |
+          echo "tag=${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - uses: docker/login-action@v3
         with:
@@ -51,12 +68,17 @@ jobs:
           file: CC_Demo/Dockerfile
           push: true
           tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.image.outputs.version }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.image.outputs.tag }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
   terraform-apply:
     needs: build-and-push
     runs-on: ubuntu-latest
+    # Two releases published close together must not apply at the same time.
+    concurrency:
+      group: deploy-prod
+      cancel-in-progress: false
     defaults:
       run:
         working-directory: terraform

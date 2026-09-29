@@ -1,5 +1,6 @@
 using System.Text.Json;
 using CC_Demo.Models;
+using CC_Demo.Models.Gcd;
 using CC_Demo.Models.Marvel;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,7 @@ public class AppDbContext : DbContext, IAppDbContext
 
     public DbSet<Creator> Creator => Set<Creator>();
     public DbSet<MarvelRecord> MarvelRecords => Set<MarvelRecord>();
+    public DbSet<GcdRecord> GcdRecords => Set<GcdRecord>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -85,6 +87,23 @@ public class AppDbContext : DbContext, IAppDbContext
             entity.Property(m => m.Data).HasColumnName("data").HasColumnType("jsonb");
             entity.Property(m => m.Resource).HasColumnName("resource");
             entity.Property(m => m.ResourceUri).HasColumnName("resource_uri");
+        });
+
+        modelBuilder.Entity<GcdRecord>(entity =>
+        {
+            // Raw GCD landing table, populated by an external Python scraper. Unlike cc_demo,
+            // this table's schema IS owned by EF migrations, so it stays under version control.
+            entity.ToTable("Raw_GCD_Data");
+            entity.HasKey(g => g.Id);
+
+            entity.Property(g => g.Id).HasColumnName("id")
+                .HasConversion(id => id.ToString(), value => Ulid.Parse(value));
+            entity.Property(g => g.GcdId).HasColumnName("gcd_id");
+            entity.Property(g => g.Resource).HasColumnName("resource");
+            entity.Property(g => g.Data).HasColumnName("data").HasColumnType("jsonb");
+            entity.Property(g => g.DateTimeIngested).HasColumnName("datetime_ingested");
+
+            entity.HasIndex(g => new { g.Resource, g.GcdId });
         });
     }
 }

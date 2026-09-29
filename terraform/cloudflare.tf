@@ -15,5 +15,5 @@ resource "cloudflare_dns_record" "cc_demo_api" {
 # Zone WAF:Edit granted on the token - this looks like a Free-plan API/product
 # gate rather than a token scope problem (the dashboard's "1 free rate
 # limiting rule" allowance appears to be UI-only, not exposed to this API on
-# Free). If you want a rate limit later, add it manually in the dashboard:
+# Free). If a rate limit is desired, add it manually in the dashboard:
 # Security > WAF > Rate limiting rules.
