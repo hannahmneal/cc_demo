@@ -15,7 +15,7 @@ GitHub Actions provides easy credential delivery and deployment: publishing a Gi
 
 ### Releasing
 
-1. Open and merge the release PR (`master` <- `dev`) using the release template: `gh pr create --base master --head dev --template release.md`. Issues and merged work are listed in the generated release notes, not the PR.
+1. Open and merge the release PR (`master` <- `dev`) using the release template: `gh pr create --base master --head dev --template release.md --label release`. Issues and merged work are listed in the generated release notes, not the PR. Notes are grouped by PR label (see `.github/release.yml`), so label feature PRs `enhancement`, `bug`, `documentation`, etc.
 2. Create a release from `master`, e.g. `gh release create v1.2.0 --target master --generate-notes` (or **Releases > Draft a new release** in GitHub). Use `vMAJOR.MINOR.PATCH` tags.
 3. Publishing the release runs tests, builds the image (tagged with the version, the commit SHA and `latest`), applies Terraform and triggers the Render deploy.
 

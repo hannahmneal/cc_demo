@@ -1,6 +1,7 @@
 <!--
 Release PR: master <- dev
 Title: "Release vX.Y.Z"
+Label: release (keeps this PR out of the generated release notes)
 Merged work and issues are listed in the GitHub release notes, not here.
 -->
 
