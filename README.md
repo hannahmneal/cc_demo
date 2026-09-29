@@ -11,7 +11,19 @@ A Microservice API hosted on Render with Cloudflare sitting in front of it as a 
 
 Terraform scaffolds the infrastructure. In order to avoid tf state collisions on successive CI runs, Cloudflare's R2 Object Storage bucket is used for shared state storage.
 
-GitHub Actions provides easy credential delivery and deployment: pushes to `master` sets the deployment into motion.
+GitHub Actions provides easy credential delivery and deployment: publishing a GitHub release sets the deployment into motion. Merging to `master` alone does not deploy.
+
+### Releasing
+
+1. Merge the release PR (`master` <- `dev`).
+2. Create a release from `master`, e.g. `gh release create v1.2.0 --target master --generate-notes` (or **Releases > Draft a new release** in GitHub). Use `vMAJOR.MINOR.PATCH` tags.
+3. Publishing the release runs tests, builds the image (tagged with the version, the commit SHA and `latest`), applies Terraform and triggers the Render deploy.
+
+Notes:
+- The workflow refuses to deploy a release whose commit is not on `master`.
+- Pre-releases are not deployed.
+- `v*` tags are protected: only repo admins can move or delete them.
+- **Rollback:** open the Actions run for an earlier release and choose **Re-run all jobs**. It rebuilds that version, points `latest` back at it and redeploys.
 
 ### 🚩 Gotchas 🚩
 
