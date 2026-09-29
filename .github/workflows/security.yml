@@ -1,0 +1,53 @@
+name: Security scan
+
+on:
+  pull_request:
+    branches: [master, dev]
+
+permissions:
+  contents: read
+
+jobs:
+  # Blocks PRs that add or upgrade to a dependency with a known advisory.
+  dependency-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: moderate
+
+  # Full scan of the resolved NuGet graph (including transitive packages),
+  # so existing CVEs are caught too, not just ones introduced by this PR.
+  nuget-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+
+      - run: dotnet restore CC_Demo.sln
+
+      # `dotnet list package --vulnerable` exits 0 even when it finds
+      # something, so fail on its output instead.
+      - name: Check for vulnerable packages
+        run: |
+          dotnet list CC_Demo.sln package --vulnerable --include-transitive | tee audit.txt
+          if grep -q "has the following vulnerable packages" audit.txt; then
+            echo "::error::Vulnerable NuGet packages found"
+            exit 1
+          fi
+
+  pip-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pip-audit
+      - run: pip-audit -r CC_Demo_Scraper/requirements.txt
