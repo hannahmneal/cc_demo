@@ -1,7 +1,7 @@
 --------------------------------------------------------------------
 -- Preliminary query to determine (a) the values of, and (b) the
 -- number of unique values for each key in the raw GCD data (JSONB).
--- TODO: LLM 
+-- TODO: LLM? data build tool (dbt)?
 --------------------------------------------------------------------
 WITH gcd_series AS (
     SELECT gcd_id, data
