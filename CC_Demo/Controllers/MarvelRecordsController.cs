@@ -7,8 +7,8 @@ namespace CC_Demo.Controllers;
 
 /// <summary>
 /// Provides read-only access to raw Marvel-sourced records (the <c>cc_demo</c> table) as ingested
-/// from the Marvel Developer API, scoped by resource and by resource type (characters, comics,
-/// creators, events, series, stories).
+/// from the Marvel Developer API, scoped by resource type (characters, comics, creators, events,
+/// series, stories).
 /// </summary>
 [ApiController]
 [Route("api/marvel/{resource}")]
